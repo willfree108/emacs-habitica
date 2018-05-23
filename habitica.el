@@ -442,16 +442,17 @@ TO-NEXT-LEVEL is the experience required to reach the next level."
            (habitica--set-profile-tag "Level" (format "%s" level-diff))
            (habitica--set-profile-tag "Exp" (format "%.2f" exp-diff))))))
 
+;; On Emacs 26.1rc, it will throw floatp exception.
 (defun habitica--set-profile (profile)
   "Set the profile variables.
 
 PROFILE is the JSON formatted response."
   (setq habitica-level (assoc-default 'lvl profile)) ;get level
-  (setq habitica-exp (fround (assoc-default 'exp profile))) ;get exp
+  (setq habitica-exp (fround (floatp (assoc-default 'exp profile)))) ;get exp
   (setq habitica-max-exp (assoc-default 'toNextLevel profile)) ;get max experience
-  (setq habitica-hp (fround (assoc-default 'hp profile))) ;get hp
+  (setq habitica-hp (fround (floatp (assoc-default 'hp profile)))) ;get hp
   (setq habitica-max-hp (assoc-default 'maxHealth profile)) ;get max hp
-  (setq habitica-mp (fround (assoc-default 'mp profile))) ;get mp
+  (setq habitica-mp (fround (floatp (assoc-default 'mp profile)))) ;get mp
   (setq habitica-max-mp (assoc-default 'maxMP profile)) ;get max mp
   (setq habitica-gold (string-to-number (format "%d" (assoc-default 'gp profile)))) ;get gold
   (setq habitica-silver (string-to-number (format "%d" (* 100 (- (assoc-default 'gp profile) habitica-gold))))) ;get silver
